@@ -30,7 +30,7 @@ public class PortController extends HttpServlet {
             String dateOff = req.getParameter("dateOff");
             int[] result = imOutService.SelectNum(name, dateOn, dateOff);
             req.setAttribute("result",result);
-            req.getRequestDispatcher("/port.jsp").forward(req,resp);
+            req.getRequestDispatcher("/port1.jsp").forward(req,resp);
         }else if("/Port/t2".equals(servletPath)){
             String name = req.getParameter("name");
             String dateOn = req.getParameter("dateOn");
@@ -43,7 +43,7 @@ public class PortController extends HttpServlet {
             String id=req.getParameter("id");
             Map<String, Integer[]> result = imOutService.QueryLogistics(id);
             req.setAttribute("result",result);
-            req.getRequestDispatcher("").forward(req,resp);
+            req.getRequestDispatcher("/Port3.jsp").forward(req,resp);
 
         } else if ("/Port/t4".equals(servletPath)) {
             String name = req.getParameter("name");
@@ -51,8 +51,7 @@ public class PortController extends HttpServlet {
             String dateOff = req.getParameter("dateOff");
             double result = imOutService.QueryScale(name, dateOn, dateOff);
             req.setAttribute("result",result);
-            req.getRequestDispatcher("").forward(req,resp);
-
+            req.getRequestDispatcher("/Port4.jsp").forward(req,resp);
         }
 
     }

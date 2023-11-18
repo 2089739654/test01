@@ -29,7 +29,7 @@ public class UserController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath()+"/index.jsp");
 
             }else{
-                //error
+
                 resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
             }
         } else if ("/User/logoff".equals(servletPath)) {
@@ -40,7 +40,7 @@ public class UserController extends HttpServlet {
             if(counter==1){
                 resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
             }else {
-                //error
+
                 resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
             }
 
