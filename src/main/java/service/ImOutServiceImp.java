@@ -2,34 +2,31 @@ package service;
 
 import mapper.PortMapper;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pojo.Port;
 import utils.SqlSessionUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Transactional
+@Service("ImOutServiceImp")
 public class ImOutServiceImp implements ImOutService{
+    @Autowired
+    private PortMapper portMapper;
     public int[] SelectNum(String name, String dateOn, String dateOff){
-        SqlSession sqlSession=SqlSessionUtil.GetSqlSession();
-        PortMapper portMapper=sqlSession.getMapper(PortMapper.class);
-
         List<Port> listIm = portMapper.selectByNameDatePort(name,dateOn,dateOff,null,"入库");
         List<Port> listOut = portMapper.selectByNameDatePort(name,dateOn,dateOff,null,"出库");
         int []result =new int[2];
         result[0]=listIm.size();
         result[1]=listOut.size();
-
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
         return result;
     }
 
 
     public Map<String,Integer[]> QueryGoods(String name,String dateOn, String dateOff,String lading_id){
-        SqlSession sqlSession=SqlSessionUtil.GetSqlSession();
-        PortMapper portMapper=sqlSession.getMapper(PortMapper.class);
-
         List<Port> list = portMapper.selectByNameDatePort(name,dateOn,dateOff,lading_id,null);
         Map<String,Integer[]> result=new HashMap<>();
         for (Port port:list
@@ -46,28 +43,17 @@ public class ImOutServiceImp implements ImOutService{
             }
             result.put(port.getAction_date(),i);
         }
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
         return result;
     }
 
 
     public double QueryScale(String name,String dateOn, String dateOff){
-        SqlSession sqlSession=SqlSessionUtil.GetSqlSession();
-        PortMapper portMapper=sqlSession.getMapper(PortMapper.class);
-
-        int total = portMapper.selectAll();
+        int total = portMapper.selectAll(dateOn,dateOff);
         List<Port> list = portMapper.selectByNameDatePort(name, dateOn, dateOff, null, null);
-
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
         return (double) list.size() /total;
     }
 
     public Map<String,Integer[]> QueryLogistics(String lading_id){
-        SqlSession sqlSession=SqlSessionUtil.GetSqlSession();
-        PortMapper portMapper=sqlSession.getMapper(PortMapper.class);
-
         List<Port> list = portMapper.selectByNameDatePort(null, null, null, lading_id, null);
         Map<String,Integer[]> result =new HashMap<>();
         for (Port port:list
@@ -84,13 +70,19 @@ public class ImOutServiceImp implements ImOutService{
             }
             result.put(port.getPort_name(),i);
         }
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
         return result;
     }
 
+    public int insert(Port port) {
+        return portMapper.insert(port);
+    }
 
+    public int update(Port port) {
+        return  portMapper.update(port);
+    }
 
-
+    public int deleteByNameDatePort(String name, String date) {
+        return portMapper.deleteByNameDatePort(name,date);
+    }
 
 }

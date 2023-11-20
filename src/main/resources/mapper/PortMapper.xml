@@ -23,8 +23,8 @@
         insert into container() values(null,#{port_name},#{container_id},#{container_size},#{lading_id},#{container_yard},#{action},#{action_date})
     </insert>
 
-    <select id="selectAll">
-        select count(*) from container
+    <select id="selectAll" resultType="integer">
+        select count(*) from container where action_date between #{action_date_on} and #{action_date_off}
     </select>
 
 

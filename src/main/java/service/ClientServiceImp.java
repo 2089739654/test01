@@ -3,25 +3,24 @@ package service;
 import mapper.ClientMapper;
 import mapper.PortMapper;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pojo.Client;
 import utils.SqlSessionUtil;
 
+
+
+@Transactional
+@Service("ClientServiceImp")
 public class ClientServiceImp implements ClientService{
+    @Autowired
+    private ClientMapper mapper;
     public Client QueryClient(String identity, String name, String phone) {
-        SqlSession sqlSession= SqlSessionUtil.GetSqlSession();
-        ClientMapper mapper=sqlSession.getMapper(ClientMapper.class);
-        Client client = mapper.selectByIdentityNamePhone(identity, name, phone);
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
-        return client;
+        return mapper.selectByIdentityNamePhone(identity, name, phone);
     }
 
     public int AddClient(Client client) {
-        SqlSession sqlSession= SqlSessionUtil.GetSqlSession();
-        ClientMapper mapper=sqlSession.getMapper(ClientMapper.class);
-        int counter = mapper.insert(client);
-        sqlSession.commit();
-        SqlSessionUtil.close(sqlSession);
-        return counter;
+        return mapper.insert(client);
     }
 }

@@ -5,28 +5,10 @@
 
 <configuration>
 
-    <properties resource="jdbc.properties"/>
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
 
-
-    <environments default="project01">
-
-        <environment id="project01">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="${jdbc.driver}"/>
-                <property name="url" value="${jdbc.url}"/>
-                <property name="username" value="${jdbc.username}"/>
-                <property name="password" value="${jdbc.password}"/>
-            </dataSource>
-        </environment>
-
-
-    </environments>
-
-
-    <mappers>
-        <package name="mapper"/>
-    </mappers>
 
 
 </configuration>

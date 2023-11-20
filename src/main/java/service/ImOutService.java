@@ -1,5 +1,8 @@
 package service;
 
+import org.apache.ibatis.annotations.Param;
+import pojo.Port;
+
 import java.util.Map;
 
 public interface ImOutService {
@@ -8,4 +11,10 @@ public interface ImOutService {
 
     public double QueryScale(String name,String dateOn, String dateOff);
     public Map<String,Integer[]> QueryLogistics(String lading_id);
+
+    public int insert(Port port);
+
+    int update(Port port);
+
+    int deleteByNameDatePort(String name,String date);
 }
