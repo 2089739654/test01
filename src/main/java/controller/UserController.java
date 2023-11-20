@@ -1,6 +1,10 @@
 package controller;
 
+import cn.hutool.crypto.digest.BCrypt;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import pojo.User;
 import service.LoginService;
 import service.LoginServiceImp;
 
@@ -14,38 +18,55 @@ import java.io.IOException;
 
 @WebServlet({"/User/login","/User/logoff","/User/signin"})
 public class UserController extends HttpServlet {
+
+    private  ApplicationContext applicationContext=new ClassPathXmlApplicationContext("spring.xml");
+    private  LoginService loginService = applicationContext.getBean("LoginServiceImp", LoginService.class);
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         String servletPath = req.getServletPath();
-        System.out.println(servletPath);
         if("/User/login".equals(servletPath)){
             String id = req.getParameter("username");
             String password = req.getParameter("password");
-            LoginService loginService=new LoginServiceImp();
-            int counter = loginService.Login(id, Integer.parseInt(password));
-            if(counter==1){
+            String hashpw = BCrypt.hashpw(password);
+            User login = loginService.Login(id);
+            if(BCrypt.checkpw(login.getPassword(),hashpw)){
                 HttpSession httpSession= req.getSession(false);
                 httpSession.setAttribute("username",id);
                 resp.sendRedirect(req.getContextPath()+"/index.jsp");
 
             }else{
-
                 resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
             }
         } else if ("/User/logoff".equals(servletPath)) {
             String id = req.getParameter("username");
             String password = req.getParameter("password");
-            LoginService loginService=new LoginServiceImp();
-            int counter = loginService.Logoff(id, Integer.parseInt(password));
-            if(counter==1){
-                resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
+            String hashpw = BCrypt.hashpw(password);
+            User login = loginService.Login(id);
+            if(BCrypt.checkpw(password,login.getPassword())){
+                int logoff = loginService.Logoff(id);
+                if(logoff==1){
+                    resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
+                }else {
+                    //异常处理
+                }
             }else {
-
                 resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
             }
 
         } else if ("/User/signin".equals(servletPath)) {
-            resp.sendRedirect(req.getContextPath()+"/signin.jsp");
+            String name= req.getParameter("name");
+            String id = req.getParameter("username");
+            String password = BCrypt.hashpw(req.getParameter("password"));
+            String phone = req.getParameter("phone");
+            String address = req.getParameter("address");
+            User user=new User(null,name,id,phone,address,password);
+            int counter = loginService.SignIn(user);
+            if(counter==1){
+                resp.sendRedirect(req.getContextPath()+"/signin.jsp");
+            }else {
+                //异常处理
+            }
         }else {
             resp.sendRedirect(req.getContextPath()+"/welcome.jsp");
         }

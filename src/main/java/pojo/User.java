@@ -6,9 +6,9 @@ public class User {
     private String id;
     private String phone;
     private String address;
-    private Integer password;
+    private String password;
 
-    public User(Integer index, String name, String id, String phone, String address, Integer password) {
+    public User(Integer index, String name, String id, String phone, String address, String password) {
         this.index = index;
         this.name = name;
         this.id = id;
@@ -60,11 +60,11 @@ public class User {
         this.address = address;
     }
 
-    public Integer getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Integer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

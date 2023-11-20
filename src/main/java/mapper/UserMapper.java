@@ -4,9 +4,9 @@ import org.apache.ibatis.annotations.Param;
 import pojo.User;
 
 public interface UserMapper {
-    int selectByIdPassword(@Param("id") String id,@Param("password") Integer password);
+    User selectById(@Param("id") String id);
 
-    int deleteByIdPassword(@Param("id") String id,@Param("password") Integer password);
+    int deleteById(@Param("id") String id);
 
     int insert(User user);
 }

@@ -16,15 +16,15 @@ public class LoginServiceImp implements LoginService{
     @Autowired
     private UserMapper mapper;
 
-    public int Login(String id, Integer password) {
-        return mapper.selectByIdPassword(id,password);
+    public User Login(String id) {
+        return mapper.selectById(id);
     }
 
     public int SignIn(User user) {
         return mapper.insert(user);
     }
 
-    public int Logoff(String id, Integer password) {
-        return mapper.deleteByIdPassword(id, password);
+    public int Logoff(String id) {
+        return mapper.deleteById(id);
     }
 }
