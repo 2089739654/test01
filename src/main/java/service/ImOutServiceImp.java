@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pojo.Port;
 import utils.SqlSessionUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Transactional
 @Service("ImOutServiceImp")
 public class ImOutServiceImp implements ImOutService{
@@ -28,11 +27,11 @@ public class ImOutServiceImp implements ImOutService{
 
     public Map<String,Integer[]> QueryGoods(String name,String dateOn, String dateOff,String lading_id){
         List<Port> list = portMapper.selectByNameDatePort(name,dateOn,dateOff,lading_id,null);
-        Map<String,Integer[]> result=new HashMap<>();
+        Map<String,Integer[]> result=new TreeMap<>();
         for (Port port:list
              ) {
-            Integer[] i=new Integer[2];
-            if(result.containsKey(port.getAction_date())){
+            Integer[] i= {0,0};
+            if(!result.containsKey(port.getAction_date())){
                 result.put(port.getAction_date(),i);
             }
             i=result.get(port.getAction_date());
@@ -58,8 +57,8 @@ public class ImOutServiceImp implements ImOutService{
         Map<String,Integer[]> result =new HashMap<>();
         for (Port port:list
         ) {
-            Integer[] i=new Integer[2];
-            if(result.containsKey(port.getPort_name())){
+            Integer[] i={0,0};
+            if(!result.containsKey(port.getPort_name())){
                 result.put(port.getPort_name(),i);
             }
             i=result.get(port.getPort_name());
