@@ -5,15 +5,16 @@
 
 <mapper namespace="mapper.PortMapper">
 
-    <delete id="deleteByNameDatePort">
+    <delete id="delete">
         delete from container
         <where>
-            <if test="port_name!=null">
-                and port_name=#{port_name}
-            </if>
-            <if test="action_date!=null and action_date!=''">
-                and action_date=#{action_date}
-            </if>user
+            <if test="port_name!=null">and port_name=#{port_name}, </if>
+            <if test="container_id!=null">and container_id=#{container_id}, </if>
+            <if test="container_size!=null">and container_size=#{container_size}, </if>
+            <if test="lading_id!=null">and lading_id=#{lading_id}, </if>
+            <if test="container_yard!=null">and container_yard=#{container_yard}, </if>
+            <if test="action!=null">and action=#{action}, </if>
+            <if test="action_date!=null and action_date!=''">and action_date=#{action_date}, </if>
         </where>
 
     </delete>

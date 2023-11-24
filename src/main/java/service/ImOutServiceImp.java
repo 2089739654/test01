@@ -80,8 +80,8 @@ public class ImOutServiceImp implements ImOutService{
         return  portMapper.update(port);
     }
 
-    public int deleteByNameDatePort(String name, String date) {
-        return portMapper.deleteByNameDatePort(name,date);
+    public int delete(Port port) {
+        return portMapper.delete(port);
     }
 
 }

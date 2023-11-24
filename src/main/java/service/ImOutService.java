@@ -16,5 +16,5 @@ public interface ImOutService {
 
     int update(Port port);
 
-    int deleteByNameDatePort(String name,String date);
+    int delete(Port port);
 }

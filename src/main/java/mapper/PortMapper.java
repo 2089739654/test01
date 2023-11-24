@@ -11,7 +11,7 @@ public interface PortMapper {
 
     int update(Port port);
     int insert(Port port);
-    int deleteByNameDatePort(@Param("port_name") String name, @Param("action_date") String date);
+    int delete(Port port);
     List<Port> selectByNameDatePort(@Param("port_name") String name, @Param("action_date_on") String dateOn,@Param("action_date_off") String dateOff, @Param("lading_id") String id,@Param("action") String action);
 
     int selectAll(@Param("action_date_on")String dateOn,@Param("action_date_off")String dateOff);

@@ -1,6 +1,8 @@
 package controller;
 
 import cn.hutool.crypto.digest.BCrypt;
+import exception.FailSignInException;
+import exception.NoUserException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,22 +29,23 @@ public class UserController{
     @Autowired
     private LoginService loginService;
     @RequestMapping("/login.do")
-    public ModelAndView Login(String username, String password){
+    public ModelAndView Login(String username, String password,HttpSession session) throws NoUserException {
         String hashpw = BCrypt.hashpw(password);
         User login = loginService.Login(username);
         ModelAndView mv=new ModelAndView();
+        mv.setViewName("index");
         if(login!=null){
             if(BCrypt.checkpw(login.getPassword(),hashpw)){
+                session.setAttribute("username",login.getName());
                 mv.addObject("user",login);
                 mv.setViewName("index");
                 return mv;
             }
         }
-        //throw NoUserException;
-        return mv;
+        throw new NoUserException("登录失败");
     }
     @RequestMapping("/logoff.do")
-    public ModelAndView Logoff(String username, String password){
+    public ModelAndView Logoff(String username, String password,HttpSession session) throws FailSignInException {
         User login = loginService.Login(username);
         ModelAndView mv=new ModelAndView();
         mv.setViewName("qwe");
@@ -50,16 +53,15 @@ public class UserController{
             String hashpw = BCrypt.hashpw(password);
             if(BCrypt.checkpw(login.getPassword(),hashpw)){
                 if(loginService.Logoff(username)==1){
+                    session.removeAttribute("username");
                     return mv;
-                }else {
-                    //throw NoUserException;
                 }
             }
         }
-        return mv;
+        throw new FailSignInException("注销失败");
     }
     @RequestMapping("/SignIn.do")
-    public ModelAndView SignIn(User user){
+    public ModelAndView SignIn(User user) throws FailSignInException {
         user.setPassword(BCrypt.hashpw(user.getPassword()));
         ModelAndView mv=new ModelAndView();
         if(loginService.SignIn(user)==1){
@@ -68,9 +70,7 @@ public class UserController{
             return mv;
         }
         else {
-            //throw NoUserException;
-            mv.setViewName("welcome");
-            return mv;
+            throw new FailSignInException("注册失败");
         }
 
     }

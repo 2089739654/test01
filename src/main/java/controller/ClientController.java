@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,52 +27,20 @@ public class ClientController {
         Client client = clientService.QueryClient(identity, name, phone);
         ModelAndView mv=new ModelAndView();
         mv.setViewName("result");
-        if(client!=null){
-            mv.addObject("client",client);
-            return mv;
-        }else {
-            //throw
-            return mv;
-        }
-
+        mv.addObject("client",client);
+        return mv;
     }
     @RequestMapping("/add.do")
-    public ModelAndView AddClient(Client client){
+    public ModelAndView AddClient(Client client) throws ClientException {
         ModelAndView mv=new ModelAndView();
         if(clientService.AddClient(client)==1){
             mv.setViewName("result");
             return mv;
         }else {
-            //throw
-            return mv;
+            throw new ClientException("添加失败");
         }
     }
 
 
 
 }
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        ClientService clientService=new ClientServiceImp();
-//        String servletPath = req.getServletPath();
-//        req.setCharacterEncoding("UTF-8");
-//        if("/Client/t1".equals(servletPath)){
-//            String name=req.getParameter("name");
-//            String phone=req.getParameter("phone");
-//            String identity=req.getParameter("identity");
-//            String id=req.getParameter("id");
-//            String company=req.getParameter("company");
-//            Client client=new Client(null,name,phone,identity,id,company);
-//            int counter = clientService.AddClient(client);
-//
-//        } else if ("/Client/t2".equals(servletPath)) {
-//            String name=req.getParameter("name");
-//            String phone=req.getParameter("phone");
-//            String identity=req.getParameter("identity");
-//            Client client = clientService.QueryClient(identity, name, phone);
-//            req.setAttribute("client",client);
-//            req.getRequestDispatcher("").forward(req,resp);
-//        }
-//
-//
-//    }
