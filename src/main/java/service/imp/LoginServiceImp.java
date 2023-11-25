@@ -1,4 +1,4 @@
-package service;
+package service.imp;
 
 import mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pojo.User;
+import service.LoginService;
 import utils.SqlSessionUtil;
 
 
 
 @Transactional
 @Service("LoginServiceImp")
-public class LoginServiceImp implements LoginService{
+public class LoginServiceImp implements LoginService {
     @Autowired
     private UserMapper mapper;
 

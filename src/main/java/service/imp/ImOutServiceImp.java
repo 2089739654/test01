@@ -1,4 +1,4 @@
-package service;
+package service.imp;
 
 import mapper.PortMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pojo.Port;
+import service.ImOutService;
 import utils.SqlSessionUtil;
 
 import java.util.*;
 
 @Transactional
 @Service("ImOutServiceImp")
-public class ImOutServiceImp implements ImOutService{
+public class ImOutServiceImp implements ImOutService {
     @Autowired
     private PortMapper portMapper;
     public int[] SelectNum(String name, String dateOn, String dateOff){

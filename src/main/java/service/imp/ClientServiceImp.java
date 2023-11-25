@@ -1,4 +1,4 @@
-package service;
+package service.imp;
 
 import mapper.ClientMapper;
 import mapper.PortMapper;
@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pojo.Client;
+import service.ClientService;
 import utils.SqlSessionUtil;
 
 
 
 @Transactional
 @Service("ClientServiceImp")
-public class ClientServiceImp implements ClientService{
+public class ClientServiceImp implements ClientService {
     @Autowired
     private ClientMapper mapper;
     public Client QueryClient(String identity, String name, String phone) {
